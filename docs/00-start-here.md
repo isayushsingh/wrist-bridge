@@ -18,7 +18,7 @@ Don't send the web page to the watch. Send a **description of the screen** in pl
 
 Because every plate follows the same standard, **one watch app can show any PWA**. You never rebuild the watch app for a new website; you just write a new `watch.json`.
 
-![System context](diagrams/01-system-context.svg)
+![System context](diagrams/01-system-context.png)
 
 ## The three parts
 

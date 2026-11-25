@@ -15,7 +15,7 @@
 
 ## 2. System context
 
-![System context](diagrams/01-system-context.svg)
+![System context](diagrams/01-system-context.png)
 
 | Actor | Talks to | Over | Carries |
 |---|---|---|---|
@@ -26,7 +26,7 @@
 
 ## 3. Components
 
-![Components](diagrams/02-components.svg)
+![Components](diagrams/02-components.png)
 
 ### Proxy (`proxy/`)
 
@@ -59,7 +59,7 @@
 
 ## 4. The render pipeline
 
-![Pipeline](diagrams/03-pipeline.svg)
+![Pipeline](diagrams/03-pipeline.png)
 
 1. **Look up** the screen in `watch.json`.
 2. **Fetch** its `source` URL. Bindings such as `{{params.id}}` are filled and URL-encoded. The URL must be on the app's own origin, and GET responses are cached for the screen's `ttl`.
@@ -70,20 +70,20 @@
 ## 5. Key flows
 
 ### Opening a screen (with ETag)
-![Open screen](diagrams/04-seq-open-screen.svg)
+![Open screen](diagrams/04-seq-open-screen.png)
 
 ### Running an action
-![Action](diagrams/05-seq-action.svg)
+![Action](diagrams/05-seq-action.png)
 
 ### Offline
-![Offline](diagrams/06-seq-offline.svg)
+![Offline](diagrams/06-seq-offline.png)
 
 ### Screen state machine (watch)
-![States](diagrams/07-screen-states.svg)
+![States](diagrams/07-screen-states.png)
 
 ## 6. Deployment
 
-![Deployment](diagrams/08-deployment.svg)
+![Deployment](diagrams/08-deployment.png)
 
 - **Proxy:** one Vercel project with root directory `proxy/`. It runs as serverless Node functions, with no database.
 - **Watch app:** installed from Xcode. A free Apple ID works for your own watch; the app expires every 7 days and you reinstall it. The App Store needs the paid developer program ($99/yr).

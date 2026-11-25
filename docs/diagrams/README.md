@@ -1,12 +1,14 @@
 # Diagrams
 
 - `src/*.mmd`: the **source** (Mermaid). Edit these.
-- `*.svg` / `*.png`: rendered copies used by the docs, so they display anywhere (GitHub, VS Code, Finder, offline).
+- `*.png`: rendered copies **embedded in the docs**. Use PNG in Markdown: Mermaid SVGs draw labels with `<foreignObject>`, which many viewers (VS Code preview, some GitHub views) refuse to render inside `<img>` ("Invalid image source").
+- `*.svg`: vector copies for zooming or slides; not embedded.
 
-Re-render after editing:
+Re-render **both** after editing:
 
 ```bash
 npx -y @mermaid-js/mermaid-cli -i docs/diagrams/src/03-pipeline.mmd -o docs/diagrams/03-pipeline.svg -b white
+npx -y @mermaid-js/mermaid-cli -i docs/diagrams/src/03-pipeline.mmd -o docs/diagrams/03-pipeline.png -b white -s 2
 ```
 
 | File | Shows |

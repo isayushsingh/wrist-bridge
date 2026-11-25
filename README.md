@@ -4,7 +4,7 @@
 
 watchOS has no browser and no PWA support. WristBridge doesn't try to shrink a web page onto the watch. Instead it uses **server-driven UI**: a small proxy turns your PWA's existing JSON API into a compact screen description, and a native watch app renders it.
 
-![System context](docs/diagrams/01-system-context.svg)
+![System context](docs/diagrams/01-system-context.png)
 
 ## How it works in one paragraph
 
