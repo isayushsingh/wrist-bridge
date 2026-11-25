@@ -10,6 +10,14 @@ watchOS has no browser and no PWA support. WristBridge doesn't try to shrink a w
 
 Your PWA publishes `watch.json`, which says "the home screen gets its data from `/api/tasks` and shows each task as a row". The **proxy** (Next.js on Vercel) fetches that data, fills in the template, cleans and shrinks the result, and returns a few KB of **WatchUI** JSON. The **watch app** (SwiftUI) draws it natively. Taps on buttons or toggles go back through the proxy to your API. One watch app works for every PWA.
 
+## Prior art
+
+WristBridge builds on ideas that other projects already use:
+
+- **[DivKit](https://github.com/divkit/divkit)** (Yandex) and **[Nimbus](https://github.com/ZupIT/nimbus)** (ZupIT, archived in 2024) are general server-driven UI frameworks for iOS, Android and the web. You adopt them inside your own app and write layouts for their schema. WristBridge is narrower. It is one prebuilt watch app plus a proxy, and its small schema is designed around the watch's screen size, battery and connectivity. You don't write a layout backend. A PWA adds `watch.json`, and the proxy maps the PWA's existing JSON API onto screens.
+- **[Complicator](https://apps.apple.com/us/app/-/id6758154567)** turns a REST endpoint and a JSON path into a watch complication, entirely on the device. WristBridge covers complications too, and it also renders full screens, navigation and write actions such as toggles, deletes and confirmations. The cost is a proxy server that you have to run.
+- **[WatchBench](https://appadvice.com/game/app/watchbench/980326989)** (Alpha Software, 2015) let you prototype Apple Watch apps in JavaScript from an iPhone. Its aim was quick prototyping. WristBridge renders native SwiftUI and works from a versioned JSON Schema contract, so it is meant for running real PWAs on the watch.
+
 ## Repo layout
 
 ```
