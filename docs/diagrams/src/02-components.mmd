@@ -1,0 +1,25 @@
+flowchart TB
+    subgraph watch["watch/ · SwiftUI app"]
+        direction TB
+        list["AppListView"] --> screen["ScreenView + ScreenViewModel"]
+        screen --> doc["DocumentView → NodeView<br/><i>renderer</i>"]
+        doc --> comps["Components/<br/>Text · Row · Metric · Gauge · Chart<br/>Image · Button · Toggle"]
+        screen --> client["BridgeClient"]
+        list --> client
+        client <--> cache[("ResponseCache<br/>disk + ETag")]
+        widget["WristBridgeWidget<br/><i>complication</i>"] --> client
+    end
+    subgraph proxy["proxy/ · Next.js on Vercel"]
+        direction TB
+        routes["app/api/v1/*<br/><i>route handlers</i>"] --> handler["handler.ts<br/>auth · errors · ETag"]
+        routes --> registry["registry.ts<br/><i>which apps exist</i>"]
+        routes --> descriptor["descriptor.ts<br/><i>load + validate watch.json</i>"]
+        routes --> render["render.ts<br/><i>the pipeline</i>"]
+        render --> template["template.ts<br/><i>bindings · $repeat · $if</i>"]
+        render --> sanitize["sanitize.ts<br/><i>coerce · trim · drop</i>"]
+        render --> ttl[("TTLCache<br/>in memory")]
+        descriptor --> http["http.ts<br/><i>same-origin fetch</i>"]
+        render --> http
+    end
+    client -- HTTPS --> routes
+    http -- HTTPS --> pwa["Your PWA"]

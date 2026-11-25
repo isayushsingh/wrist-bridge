@@ -1,0 +1,178 @@
+{
+    "schemaVersion": "1",
+    "screen": {
+        "id": "home",
+        "title": "Tasks",
+        "tint": "#6366F1"
+    },
+    "ttl": 30,
+    "body": [
+        {
+            "type": "stack",
+            "axis": "horizontal",
+            "spacing": 8,
+            "children": [
+                {
+                    "type": "metric",
+                    "label": "Open",
+                    "value": "2",
+                    "tint": "#F59E0B"
+                },
+                {
+                    "type": "metric",
+                    "label": "Done",
+                    "value": "3",
+                    "tint": "#22C55E"
+                }
+            ]
+        },
+        {
+            "type": "gauge",
+            "label": "Progress",
+            "value": 0.6,
+            "min": 0,
+            "max": 1,
+            "valueLabel": "60%",
+            "tint": "#22C55E"
+        },
+        {
+            "type": "section",
+            "title": "Tasks",
+            "children": [
+                {
+                    "type": "row",
+                    "title": "Answer-writing: 2 questions",
+                    "subtitle": "Due 26 Nov \u00b7 HIGH",
+                    "icon": "circle",
+                    "tint": "#94A3B8",
+                    "action": {
+                        "type": "navigate",
+                        "screen": "detail",
+                        "params": {
+                            "id": "3"
+                        }
+                    }
+                },
+                {
+                    "type": "row",
+                    "title": "Read The Hindu editorial",
+                    "subtitle": "Due 27 Nov \u00b7 MEDIUM",
+                    "icon": "circle",
+                    "tint": "#94A3B8",
+                    "action": {
+                        "type": "navigate",
+                        "screen": "detail",
+                        "params": {
+                            "id": "5"
+                        }
+                    }
+                },
+                {
+                    "type": "row",
+                    "title": "Call the electrician",
+                    "subtitle": "Due 24 Nov \u00b7 LOW",
+                    "icon": "checkmark.circle.fill",
+                    "tint": "#22C55E",
+                    "action": {
+                        "type": "navigate",
+                        "screen": "detail",
+                        "params": {
+                            "id": "4"
+                        }
+                    }
+                },
+                {
+                    "type": "row",
+                    "title": "Revise GS2 polity notes",
+                    "subtitle": "Due 25 Nov \u00b7 HIGH",
+                    "icon": "checkmark.circle.fill",
+                    "tint": "#22C55E",
+                    "action": {
+                        "type": "navigate",
+                        "screen": "detail",
+                        "params": {
+                            "id": "1"
+                        }
+                    }
+                },
+                {
+                    "type": "row",
+                    "title": "10 km easy run",
+                    "subtitle": "Due 25 Nov \u00b7 MEDIUM",
+                    "icon": "checkmark.circle.fill",
+                    "tint": "#22C55E",
+                    "action": {
+                        "type": "navigate",
+                        "screen": "detail",
+                        "params": {
+                            "id": "2"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "type": "section",
+            "title": "Completed this week",
+            "children": [
+                {
+                    "type": "chart",
+                    "kind": "bar",
+                    "height": 70,
+                    "tint": "#6366F1",
+                    "points": [
+                        {
+                            "x": "Thu",
+                            "y": 2
+                        },
+                        {
+                            "x": "Fri",
+                            "y": 3
+                        },
+                        {
+                            "x": "Sat",
+                            "y": 1
+                        },
+                        {
+                            "x": "Sun",
+                            "y": 4
+                        },
+                        {
+                            "x": "Mon",
+                            "y": 2
+                        },
+                        {
+                            "x": "Tue",
+                            "y": 4
+                        },
+                        {
+                            "x": "Wed",
+                            "y": 2
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "button",
+            "label": "Add \u201cDrink water\u201d",
+            "icon": "plus.circle",
+            "action": {
+                "type": "call",
+                "id": "addTask",
+                "payload": {
+                    "title": "Drink water"
+                }
+            }
+        },
+        {
+            "type": "row",
+            "title": "About this demo",
+            "icon": "info.circle",
+            "action": {
+                "type": "navigate",
+                "screen": "about"
+            }
+        }
+    ]
+}

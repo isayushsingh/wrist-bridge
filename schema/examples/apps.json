@@ -1,0 +1,12 @@
+{
+    "apps": [
+        {
+            "id": "demo",
+            "name": "Demo Tasks",
+            "shortName": "Tasks",
+            "themeColor": "#6366F1",
+            "icon": "http://localhost:3123/demo/icon-192.png",
+            "entry": "home"
+        }
+    ]
+}

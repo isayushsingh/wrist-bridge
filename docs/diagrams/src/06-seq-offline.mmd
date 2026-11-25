@@ -1,0 +1,11 @@
+sequenceDiagram
+    autonumber
+    participant W as Watch app
+    participant C as ResponseCache (disk)
+    participant P as Proxy
+    W->>C: read(url)
+    C-->>W: last good document + ETag
+    W-xP: GET screen (no network / timeout)
+    Note over W: URLError caught
+    W-->>W: Show cached document<br/>with "Offline: showing saved copy"
+    Note over W,P: No cache at all → error view with "Try again"

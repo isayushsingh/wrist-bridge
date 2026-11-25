@@ -1,0 +1,31 @@
+{
+  "name": "wristbridge-proxy",
+  "version": "0.1.0",
+  "private": true,
+  "description": "WristBridge proxy: turns PWA data into WatchUI JSON for the Apple Watch app.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "smoke": "node scripts/smoke.mjs",
+    "examples": "node scripts/gen-examples.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "next": "^16.4.6",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.10",
+    "@types/react": "^19.3.1",
+    "@types/react-dom": "^19.3.0",
+    "ajv": "^8.20.0",
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.1"
+  }
+}

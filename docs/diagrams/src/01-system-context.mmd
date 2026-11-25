@@ -1,0 +1,23 @@
+flowchart LR
+    user(["👤 You"])
+    subgraph wrist["⌚ Apple Watch"]
+        app["WristBridge app<br/><i>SwiftUI</i>"]
+        comp["Complication<br/><i>WidgetKit</i>"]
+    end
+    subgraph vercel["☁️ Vercel"]
+        proxy["WristBridge proxy<br/><i>Next.js route handlers</i>"]
+        preview["Web preview<br/>/preview"]
+    end
+    subgraph yours["🌐 Your PWA (any host)"]
+        desc["watch.json<br/><i>screens + actions</i>"]
+        manifest["manifest.webmanifest<br/><i>name, icon, color</i>"]
+        api["Existing JSON API"]
+    end
+    user -- taps --> app
+    user -- glances --> comp
+    app -- "HTTPS · WatchUI JSON<br/>x-bridge-key" --> proxy
+    comp -- "HTTPS · small JSON" --> proxy
+    preview -. same API .-> proxy
+    proxy -- reads --> desc
+    proxy -- reads --> manifest
+    proxy -- "GET data / POST actions" --> api

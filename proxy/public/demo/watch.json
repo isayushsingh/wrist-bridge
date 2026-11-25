@@ -1,0 +1,144 @@
+{
+  "watchVersion": "1",
+  "name": "Demo Tasks",
+  "entry": "home",
+  "screens": {
+    "home": {
+      "title": "Tasks",
+      "tint": "#6366F1",
+      "ttl": 30,
+      "source": { "url": "/demo/api/tasks" },
+      "template": [
+        {
+          "type": "stack",
+          "axis": "horizontal",
+          "spacing": 8,
+          "children": [
+            { "type": "metric", "label": "Open", "value": "{{data.open}}", "tint": "#F59E0B" },
+            { "type": "metric", "label": "Done", "value": "{{data.done}}", "tint": "#22C55E" }
+          ]
+        },
+        {
+          "type": "gauge",
+          "label": "Progress",
+          "value": "{{data.progress}}",
+          "min": 0,
+          "max": 1,
+          "valueLabel": "{{data.progress | percent}}",
+          "tint": "#22C55E"
+        },
+        {
+          "type": "section",
+          "title": "Tasks",
+          "children": [
+            {
+              "$repeat": "data.tasks",
+              "$as": "task",
+              "type": "row",
+              "title": "{{task.title}}",
+              "subtitle": "Due {{task.due | date}} · {{task.priority | upper}}",
+              "icon": "{{task.done | pick:'checkmark.circle.fill':'circle'}}",
+              "tint": "{{task.done | pick:'#22C55E':'#94A3B8'}}",
+              "action": { "type": "navigate", "screen": "detail", "params": { "id": "{{task.id}}" } }
+            },
+            {
+              "$if": "data.tasks | len | not",
+              "type": "text",
+              "text": "No tasks. Enjoy the day.",
+              "style": "footnote"
+            }
+          ]
+        },
+        {
+          "type": "section",
+          "title": "Completed this week",
+          "children": [
+            {
+              "type": "chart",
+              "kind": "bar",
+              "height": 70,
+              "tint": "#6366F1",
+              "points": [
+                { "$repeat": "data.history", "$as": "h", "x": "{{h.day}}", "y": "{{h.completed}}" }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "button",
+          "label": "Add “Drink water”",
+          "icon": "plus.circle",
+          "action": { "type": "call", "id": "addTask", "payload": { "title": "Drink water" } }
+        },
+        {
+          "type": "row",
+          "title": "About this demo",
+          "icon": "info.circle",
+          "action": { "type": "navigate", "screen": "about" }
+        }
+      ]
+    },
+    "detail": {
+      "title": "Task",
+      "tint": "#6366F1",
+      "ttl": 15,
+      "source": { "url": "/demo/api/tasks/{{params.id}}" },
+      "template": [
+        { "type": "text", "text": "{{data.task.title}}", "style": "headline", "lines": 3 },
+        { "type": "text", "text": "Due {{data.task.due | date}} · {{data.task.priority | upper}} priority", "style": "caption" },
+        {
+          "type": "toggle",
+          "label": "Done",
+          "isOn": "{{data.task.done}}",
+          "action": { "type": "call", "id": "toggleTask" }
+        },
+        { "type": "divider" },
+        {
+          "type": "button",
+          "label": "Delete",
+          "icon": "trash",
+          "role": "destructive",
+          "action": { "type": "call", "id": "deleteTask", "confirm": "Delete this task?", "then": "pop" }
+        }
+      ]
+    },
+    "about": {
+      "title": "About",
+      "ttl": 3600,
+      "mode": "native",
+      "source": { "url": "/demo/api/about" }
+    }
+  },
+  "actions": {
+    "toggleTask": {
+      "url": "/demo/api/tasks/{{params.id}}/toggle",
+      "method": "POST",
+      "body": { "done": "{{payload.value}}" },
+      "message": "{{payload.value | pick:'Marked done':'Reopened'}}",
+      "then": "refresh"
+    },
+    "deleteTask": {
+      "url": "/demo/api/tasks/{{params.id}}",
+      "method": "DELETE",
+      "message": "Deleted",
+      "then": "pop"
+    },
+    "addTask": {
+      "url": "/demo/api/tasks",
+      "method": "POST",
+      "message": "Added",
+      "then": "refresh"
+    }
+  },
+  "complication": {
+    "ttl": 900,
+    "source": { "url": "/demo/api/tasks" },
+    "template": {
+      "text": "{{data.open}} open · {{data.progress | percent}} done",
+      "shortText": "{{data.open}}",
+      "symbol": "checklist",
+      "tint": "#6366F1",
+      "gauge": { "value": "{{data.progress}}", "label": "Done" }
+    }
+  }
+}

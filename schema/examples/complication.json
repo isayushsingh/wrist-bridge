@@ -1,0 +1,11 @@
+{
+    "text": "2 open \u00b7 60% done",
+    "ttl": 900,
+    "shortText": "2",
+    "symbol": "checklist",
+    "tint": "#6366F1",
+    "gauge": {
+        "value": 0.6,
+        "label": "Done"
+    }
+}

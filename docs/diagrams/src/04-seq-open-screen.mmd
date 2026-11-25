@@ -1,0 +1,23 @@
+sequenceDiagram
+    autonumber
+    actor U as You
+    participant W as Watch app
+    participant C as ResponseCache
+    participant P as Proxy
+    participant A as Your PWA
+    U->>W: Tap "Demo Tasks"
+    W->>C: Cached copy + ETag?
+    C-->>W: (maybe) ETag "abc"
+    W->>P: GET /api/v1/apps/demo/screens/home<br/>x-bridge-key, If-None-Match: "abc"
+    P->>A: GET /demo/watch.json (cached 5 min)
+    P->>A: GET /demo/api/tasks (cached ttl)
+    A-->>P: { tasks: [...], open: 2 }
+    P->>P: template → sanitize → JSON → ETag
+    alt same as watch's copy
+        P-->>W: 304 Not Modified (empty body)
+        W->>C: use cached document
+    else changed
+        P-->>W: 200 WatchUI document + new ETag
+        W->>C: save document + ETag
+    end
+    W-->>U: Native SwiftUI list

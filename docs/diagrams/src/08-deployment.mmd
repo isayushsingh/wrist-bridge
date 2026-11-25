@@ -1,0 +1,10 @@
+flowchart LR
+    subgraph dev["Your Mac (development)"]
+        xcode["Xcode + watchOS Simulator"] -- "http://localhost:3000" --> local["npm run dev<br/>proxy on :3000"]
+        browser["Browser /preview"] --> local
+    end
+    subgraph prod["Real use"]
+        realwatch["Your Apple Watch<br/><i>installed from Xcode</i>"] -- "https://your-proxy.vercel.app" --> vercel["Vercel<br/>proxy + demo PWA"]
+        vercel --> pwa["Your PWA<br/>e.g. myapp.vercel.app"]
+    end
+    github["GitHub repo"] -- "git push → auto deploy" --> vercel

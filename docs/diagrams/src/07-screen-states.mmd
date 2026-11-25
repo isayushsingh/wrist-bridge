@@ -1,0 +1,13 @@
+stateDiagram-v2
+    [*] --> loading: screen pushed
+    loading --> loaded: 200 / 304
+    loading --> loaded_stale: offline, cache hit
+    loading --> failed: offline, no cache / error
+    failed --> loading: Try again
+    loaded --> loaded: refresh / action then=refresh
+    loaded_stale --> loaded: refresh succeeds
+    loaded --> [*]: back / action then=pop
+    note right of loaded
+        Errors while already loaded
+        show a toast; content stays.
+    end note

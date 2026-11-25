@@ -1,0 +1,23 @@
+// "native" mode example: this endpoint returns WatchUI nodes directly (no template).
+export async function GET() {
+  return Response.json({
+    body: [
+      { type: "text", text: "WristBridge demo", style: "headline" },
+      {
+        type: "text",
+        text: "This screen comes from the PWA in native mode: the API returns WatchUI nodes directly.",
+        style: "footnote",
+      },
+      {
+        type: "section",
+        title: "How it works",
+        children: [
+          { type: "row", title: "PWA", subtitle: "Serves watch.json + JSON API", icon: "globe" },
+          { type: "row", title: "Proxy", subtitle: "Renders + trims + caches", icon: "server.rack" },
+          { type: "row", title: "Watch", subtitle: "Draws native SwiftUI", icon: "applewatch" },
+        ],
+      },
+      { type: "row", title: "Refresh", icon: "arrow.clockwise", action: { type: "refresh" } },
+    ],
+  });
+}

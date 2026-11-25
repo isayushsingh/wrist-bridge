@@ -1,0 +1,12 @@
+{
+  "name": "Demo Tasks",
+  "short_name": "Tasks",
+  "start_url": "/demo",
+  "display": "standalone",
+  "background_color": "#0B0B12",
+  "theme_color": "#6366F1",
+  "icons": [
+    { "src": "/demo/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/demo/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

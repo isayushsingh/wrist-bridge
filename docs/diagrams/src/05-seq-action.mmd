@@ -1,0 +1,18 @@
+sequenceDiagram
+    autonumber
+    actor U as You
+    participant W as Watch app
+    participant P as Proxy
+    participant A as Your PWA
+    U->>W: Tap "Delete" (call action, confirm set)
+    W-->>U: Alert "Delete this task?"
+    U->>W: Confirm
+    W->>P: POST /api/v1/apps/demo/actions/deleteTask<br/>{ payload, params: { id: "3" } }
+    P->>P: Look up action in watch.json<br/>url = /demo/api/tasks/{{params.id}}
+    P->>A: DELETE /demo/api/tasks/3
+    A-->>P: 200 { ok: true }
+    P->>P: Invalidate cached data for this app
+    P-->>W: { ok: true, message: "Deleted", then: "pop" }
+    W-->>U: ✓ haptic + toast "Deleted"
+    W->>W: then = pop → go back, reload list
+    W->>W: Reload complication timelines

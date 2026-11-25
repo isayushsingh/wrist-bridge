@@ -1,0 +1,46 @@
+{
+    "schemaVersion": "1",
+    "screen": {
+        "id": "detail",
+        "title": "Task",
+        "tint": "#6366F1"
+    },
+    "ttl": 15,
+    "body": [
+        {
+            "type": "text",
+            "text": "Answer-writing: 2 questions",
+            "style": "headline",
+            "lines": 3
+        },
+        {
+            "type": "text",
+            "text": "Due 26 Nov \u00b7 HIGH priority",
+            "style": "caption"
+        },
+        {
+            "type": "toggle",
+            "label": "Done",
+            "isOn": false,
+            "action": {
+                "type": "call",
+                "id": "toggleTask"
+            }
+        },
+        {
+            "type": "divider"
+        },
+        {
+            "type": "button",
+            "label": "Delete",
+            "icon": "trash",
+            "role": "destructive",
+            "action": {
+                "type": "call",
+                "id": "deleteTask",
+                "confirm": "Delete this task?",
+                "then": "pop"
+            }
+        }
+    ]
+}

@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wristbridge.dev/schema/watchui.v1.json",
+  "title": "WatchUI Document v1",
+  "description": "A screen the WristBridge watch app can render natively. Produced by the proxy, consumed by the SwiftUI renderer.",
+  "type": "object",
+  "required": ["schemaVersion", "screen", "body"],
+  "additionalProperties": true,
+  "properties": {
+    "schemaVersion": { "const": "1" },
+    "screen": {
+      "type": "object",
+      "required": ["id", "title"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string" },
+        "tint": { "$ref": "#/$defs/color" }
+      }
+    },
+    "ttl": { "type": "integer", "minimum": 0, "description": "Seconds the watch may treat this document as fresh." },
+    "body": { "type": "array", "items": { "$ref": "#/$defs/node" } }
+  },
+  "$defs": {
+    "color": { "type": "string", "pattern": "^#([0-9a-fA-F]{6}|[0-9a-fA-F]{8})$" },
+    "symbol": { "type": "string", "description": "SF Symbol name, e.g. checkmark.circle" },
+    "node": {
+      "oneOf": [
+        { "$ref": "#/$defs/text" },
+        { "$ref": "#/$defs/section" },
+        { "$ref": "#/$defs/stack" },
+        { "$ref": "#/$defs/row" },
+        { "$ref": "#/$defs/metric" },
+        { "$ref": "#/$defs/gauge" },
+        { "$ref": "#/$defs/chart" },
+        { "$ref": "#/$defs/image" },
+        { "$ref": "#/$defs/button" },
+        { "$ref": "#/$defs/toggle" },
+        { "$ref": "#/$defs/divider" }
+      ]
+    },
+    "text": {
+      "type": "object",
+      "required": ["type", "text"],
+      "properties": {
+        "type": { "const": "text" },
+        "text": { "type": "string" },
+        "style": { "enum": ["title", "headline", "body", "caption", "footnote"] },
+        "color": { "$ref": "#/$defs/color" },
+        "align": { "enum": ["leading", "center", "trailing"] },
+        "lines": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "section": {
+      "type": "object",
+      "required": ["type", "children"],
+      "properties": {
+        "type": { "const": "section" },
+        "title": { "type": "string" },
+        "footer": { "type": "string" },
+        "children": { "type": "array", "items": { "$ref": "#/$defs/node" } }
+      }
+    },
+    "stack": {
+      "type": "object",
+      "required": ["type", "children"],
+      "properties": {
+        "type": { "const": "stack" },
+        "axis": { "enum": ["vertical", "horizontal"] },
+        "spacing": { "type": "number", "minimum": 0 },
+        "children": { "type": "array", "items": { "$ref": "#/$defs/node" } }
+      }
+    },
+    "row": {
+      "type": "object",
+      "required": ["type", "title"],
+      "properties": {
+        "type": { "const": "row" },
+        "title": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "icon": { "$ref": "#/$defs/symbol" },
+        "value": { "type": "string" },
+        "tint": { "$ref": "#/$defs/color" },
+        "action": { "$ref": "#/$defs/action" }
+      }
+    },
+    "metric": {
+      "type": "object",
+      "required": ["type", "label", "value"],
+      "properties": {
+        "type": { "const": "metric" },
+        "label": { "type": "string" },
+        "value": { "type": "string" },
+        "unit": { "type": "string" },
+        "trend": { "enum": ["up", "down", "flat"] },
+        "tint": { "$ref": "#/$defs/color" }
+      }
+    },
+    "gauge": {
+      "type": "object",
+      "required": ["type", "label", "value"],
+      "properties": {
+        "type": { "const": "gauge" },
+        "label": { "type": "string" },
+        "value": { "type": "number" },
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "valueLabel": { "type": "string" },
+        "tint": { "$ref": "#/$defs/color" }
+      }
+    },
+    "chart": {
+      "type": "object",
+      "required": ["type", "points"],
+      "properties": {
+        "type": { "const": "chart" },
+        "kind": { "enum": ["bar", "line"] },
+        "title": { "type": "string" },
+        "height": { "type": "number", "minimum": 20 },
+        "tint": { "$ref": "#/$defs/color" },
+        "points": {
+          "type": "array",
+          "maxItems": 40,
+          "items": {
+            "type": "object",
+            "required": ["x", "y"],
+            "properties": { "x": { "type": "string" }, "y": { "type": "number" } }
+          }
+        }
+      }
+    },
+    "image": {
+      "type": "object",
+      "required": ["type", "url"],
+      "properties": {
+        "type": { "const": "image" },
+        "url": { "type": "string", "pattern": "^https?://" },
+        "alt": { "type": "string" },
+        "height": { "type": "number", "minimum": 10 }
+      }
+    },
+    "button": {
+      "type": "object",
+      "required": ["type", "label", "action"],
+      "properties": {
+        "type": { "const": "button" },
+        "label": { "type": "string" },
+        "icon": { "$ref": "#/$defs/symbol" },
+        "role": { "enum": ["normal", "destructive"] },
+        "tint": { "$ref": "#/$defs/color" },
+        "action": { "$ref": "#/$defs/action" }
+      }
+    },
+    "toggle": {
+      "type": "object",
+      "required": ["type", "label", "isOn", "action"],
+      "properties": {
+        "type": { "const": "toggle" },
+        "label": { "type": "string" },
+        "isOn": { "type": "boolean" },
+        "action": { "$ref": "#/$defs/callAction" }
+      }
+    },
+    "divider": {
+      "type": "object",
+      "required": ["type"],
+      "properties": { "type": { "const": "divider" } }
+    },
+    "action": {
+      "oneOf": [
+        { "$ref": "#/$defs/navigateAction" },
+        { "$ref": "#/$defs/callAction" },
+        { "$ref": "#/$defs/refreshAction" }
+      ]
+    },
+    "navigateAction": {
+      "type": "object",
+      "required": ["type", "screen"],
+      "properties": {
+        "type": { "const": "navigate" },
+        "screen": { "type": "string" },
+        "params": { "type": "object", "additionalProperties": { "type": "string" } }
+      }
+    },
+    "callAction": {
+      "type": "object",
+      "required": ["type", "id"],
+      "properties": {
+        "type": { "const": "call" },
+        "id": { "type": "string" },
+        "payload": {},
+        "confirm": { "type": "string" },
+        "then": { "enum": ["refresh", "pop", "none"] }
+      }
+    },
+    "refreshAction": {
+      "type": "object",
+      "required": ["type"],
+      "properties": { "type": { "const": "refresh" } }
+    }
+  }
+}

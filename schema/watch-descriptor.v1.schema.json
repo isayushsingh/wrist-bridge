@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wristbridge.dev/schema/watch-descriptor.v1.json",
+  "title": "Watch Descriptor v1 (watch.json)",
+  "description": "Served by a PWA. Tells the WristBridge proxy which screens exist, where their data comes from, and how to turn that data into WatchUI nodes.",
+  "type": "object",
+  "required": ["watchVersion", "entry", "screens"],
+  "properties": {
+    "watchVersion": { "const": "1" },
+    "name": { "type": "string" },
+    "entry": { "type": "string", "description": "Screen id shown first." },
+    "screens": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/$defs/screen" }
+    },
+    "actions": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/action" }
+    },
+    "complication": { "$ref": "#/$defs/complication" }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": ["url"],
+      "properties": {
+        "url": { "type": "string", "description": "Path or same-origin URL. May contain {{params.x}} bindings." },
+        "method": { "enum": ["GET", "POST"] }
+      }
+    },
+    "screen": {
+      "type": "object",
+      "required": ["title"],
+      "properties": {
+        "title": { "type": "string" },
+        "tint": { "type": "string" },
+        "ttl": { "type": "integer", "minimum": 0 },
+        "mode": { "enum": ["template", "native"], "description": "template: proxy renders `template` with the source data. native: source already returns a WatchUI body." },
+        "source": { "$ref": "#/$defs/source" },
+        "template": { "type": "array" }
+      }
+    },
+    "action": {
+      "type": "object",
+      "required": ["url"],
+      "properties": {
+        "url": { "type": "string" },
+        "method": { "enum": ["POST", "PUT", "PATCH", "DELETE"] },
+        "body": { "description": "Template for the JSON body. Defaults to the payload sent by the watch." },
+        "message": { "type": "string", "description": "Short confirmation shown on the watch." },
+        "then": { "enum": ["refresh", "pop", "none"] }
+      }
+    },
+    "complication": {
+      "type": "object",
+      "required": ["template"],
+      "properties": {
+        "ttl": { "type": "integer", "minimum": 300 },
+        "source": { "$ref": "#/$defs/source" },
+        "template": {
+          "type": "object",
+          "required": ["text"],
+          "properties": {
+            "text": { "type": "string" },
+            "shortText": { "type": "string" },
+            "symbol": { "type": "string" },
+            "tint": { "type": "string" },
+            "gauge": {
+              "type": "object",
+              "required": ["value"],
+              "properties": {
+                "value": { "type": ["string", "number"] },
+                "label": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

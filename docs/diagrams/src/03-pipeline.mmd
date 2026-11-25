@@ -1,0 +1,12 @@
+flowchart LR
+    A["Watch asks for<br/><b>screen 'detail'</b><br/>params {id: 3}"] --> B["Find screen in<br/>watch.json"]
+    B --> C{"Has a<br/>source?"}
+    C -- yes --> D["Fetch source URL<br/>/api/tasks/{{params.id}}<br/><i>same origin, cached ttl s</i>"]
+    C -- no --> E["data = {}"]
+    D --> F{"mode?"}
+    E --> F
+    F -- template --> G["Template engine<br/>template + {data, params}"]
+    F -- native --> H["Take data.body<br/>as-is"]
+    G --> I["Sanitizer<br/>coerce types · drop invalid<br/>budget: 150 nodes, depth 4"]
+    H --> I
+    I --> J["WatchUI document<br/>+ ETag"]
