@@ -32,7 +32,8 @@ export class TemplateError extends Error {
 
 const MAX_DEPTH = 16;
 const MAX_REPEAT = 200;
-const WHOLE = /^\{\{\s*([\s\S]+?)\s*\}\}$/;
+// Exactly one binding. The body may not contain "}}", or "{{a}} · {{b}}" would match as one expression.
+const WHOLE = /^\{\{\s*((?:(?!\}\})[\s\S])+?)\s*\}\}$/;
 const ANY = /\{\{\s*([\s\S]+?)\s*\}\}/g;
 
 // ---------------------------------------------------------------------------

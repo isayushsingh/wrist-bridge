@@ -12,6 +12,11 @@ describe("template engine", () => {
     expect(interpolate("Open: {{data.open}}", ctx)).toBe("Open: 3");
   });
 
+  it("treats a string that starts and ends with different bindings as mixed text", () => {
+    expect(interpolate("{{data.open}} · {{data.tasks.0.title}}", ctx)).toBe("3 · A");
+    expect(interpolate("{{data.open}}{{data.open}}", ctx)).toBe("33");
+  });
+
   it("applies chained filters with quoted args", () => {
     expect(evaluate("data.progress | percent", ctx)).toBe("40%");
     expect(evaluate("data.missing | default:'—'", ctx)).toBe("—");
