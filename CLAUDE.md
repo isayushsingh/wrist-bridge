@@ -20,14 +20,15 @@ The owner is a web developer (Next.js/React/Tailwind/Vercel) who is newer to Swi
 
 ## Current status — first session checklist
 
-The Swift code was written on Linux and is **syntax-checked but never compiled**. The proxy is fully verified (typecheck, 23 tests, `next build`, smoke test).
+The watch app **compiles** (Xcode 26.6, watchOS 26.5 SDK, Swift 5 mode) with no errors or warnings and runs in the simulator against a local proxy. The proxy is fully verified (typecheck, 24 tests, `next build`, smoke test). Open: the UI click-through test (`watch/WristBridgeUITests`) hasn't passed yet, because it needs `xcode-select` pointed at Xcode; a real watch hasn't been tried.
 
-Do this first, in order:
-1. `cd watch && cp Config/Secrets.example.xcconfig Config/Secrets.xcconfig` (ask the user for team id / bundle prefix), then `xcodegen generate`.
-2. Build: `xcodebuild -project WristBridge.xcodeproj -scheme WristBridge -destination 'generic/platform=watchOS Simulator' build 2>&1 | grep -E "error|warning: .*deprecated" | head -50`
-3. Fix compile errors **minimally**, keeping behaviour. Likely suspects: `@Entry` macro, Charts closure tuple destructuring in `DataViews.swift`, `.alert(…presenting:)` overload, Sendable warnings (Swift 5 mode is deliberate; don't switch to Swift 6 mode yet).
-4. Run in the simulator against `cd proxy && npm run dev` and click through the demo: list → Demo Tasks → task → toggle → delete (confirm) → back.
-5. Update the status table in `docs/00-start-here.md`.
+Checklist (M0):
+1. ✅ `Config/Secrets.xcconfig` (local simulator values) + `xcodegen generate`. Still needed for a real watch: ask the user for team id / bundle prefix.
+2. ✅ Build: `xcodebuild -project WristBridge.xcodeproj -scheme WristBridge -destination 'generic/platform=watchOS Simulator' build`. Compiled first time; none of the suspected problems (`@Entry`, Charts tuples, `.alert(presenting:)`, Sendable) appeared. Keep Swift 5 mode.
+3. ⏳ Click-through: run `DemoFlowUITests` (see `docs/07-watch-app.md` → UI test). Needs `xcode-select -p` to point at Xcode (done) and `DevToolsSecurity -enable` (both need the user's sudo; see the table in that doc section). Or click by hand: list → Tasks → task → toggle → delete (confirm) → back.
+4. Then update the status table in `docs/00-start-here.md`.
+
+Tooling note: if `xcode-select` still points at CommandLineTools, prefix commands with `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` (works for build, not for UI tests).
 
 ## Commands
 
@@ -62,7 +63,8 @@ Always run `npm run typecheck && npm test` after proxy changes.
 | Template language | `proxy/lib/template.ts` |
 | Output cleaning + budgets | `proxy/lib/sanitize.ts` |
 | Outbound fetch (same-origin guard) | `proxy/lib/http.ts` |
-| Browser renderer | `proxy/components/WatchPreview.tsx` |
+| Browser renderer | `proxy/components/WatchPreview.tsx` (`embed` prop = watch only, used on the landing page) |
+| Landing / explainer page (`/`) | `proxy/app/page.tsx`, `proxy/app/landing.css`, `proxy/components/landing/Interactive.tsx` |
 | Demo PWA | `proxy/app/demo/**`, `proxy/lib/demo-store.ts`, `proxy/public/demo/*` |
 | Swift models | `watch/Shared/Model/WatchUI.swift` |
 | Swift networking + cache | `watch/Shared/Networking/*` |

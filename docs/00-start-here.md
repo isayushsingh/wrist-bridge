@@ -46,6 +46,8 @@ If a word is unfamiliar (ETag, SSRF, complication, ...), check the [glossary](10
 
 | Area | Status |
 |---|---|
-| Proxy | Built, type-checked, 23 unit tests passing, production build OK, smoke test against a running server passing |
+| Proxy | Built, type-checked, 24 unit tests passing, production build OK, smoke test against a running server passing |
 | Web preview | Built and checked in a headless browser |
-| Watch app (Swift) | Fully written and syntax-checked, but **not compiled yet**: it was written on Linux, where Xcode isn't available. Expect a few small compile fixes the first time you open it in Xcode. See `CLAUDE.md` → "First session checklist". |
+| Watch app (Swift) | **Compiles** with Xcode 26.6 / watchOS 26.5 SDK (Swift 5 mode, watchOS 10 target), no errors or warnings, no code changes needed. Runs in the watch simulator and loads the app list from a local proxy. |
+| Watch UI test | `DemoFlowUITests` (list → Tasks → task → toggle → delete → back) builds; **not run yet**: the Mac needs developer-tools security enabled (see 07 · Watch app → UI test). |
+| Real watch | Not tried yet: needs your team id and bundle prefix in `Secrets.xcconfig`. |

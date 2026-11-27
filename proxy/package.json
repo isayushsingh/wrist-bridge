@@ -10,7 +10,10 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "smoke": "node scripts/smoke.mjs",
-    "examples": "node scripts/gen-examples.mjs"
+    "examples": "node scripts/gen-examples.mjs",
+    "sync:diagrams": "node scripts/sync-diagrams.mjs",
+    "prebuild": "node scripts/sync-diagrams.mjs",
+    "predev": "node scripts/sync-diagrams.mjs"
   },
   "engines": {
     "node": ">=20"

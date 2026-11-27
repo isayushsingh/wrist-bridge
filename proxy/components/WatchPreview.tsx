@@ -29,7 +29,8 @@ function saveKey(v: string) {
   }
 }
 
-export default function WatchPreview() {
+/** `embed`: just the watch (no key field, buttons or JSON panel), for the landing page. */
+export default function WatchPreview({ embed = false }: { embed?: boolean }) {
   const [apiKey, setApiKey] = useState("");
   const [apps, setApps] = useState<AppInfo[]>([]);
   const [stack, setStack] = useState<Route[]>([]);
@@ -111,8 +112,8 @@ export default function WatchPreview() {
   const tint = doc?.screen.tint ?? route?.tint ?? "#0A84FF";
 
   return (
-    <div className="preview">
-      <div className="controls">
+    <div className={embed ? "preview embed" : "preview"}>
+      {!embed && <div className="controls">
         <label>
           x-bridge-key
           <input
@@ -133,7 +134,7 @@ export default function WatchPreview() {
           </div>
         )}
         {error && <p className="error">{error}</p>}
-      </div>
+      </div>}
 
       <div className="watch" style={{ ["--tint" as string]: tint }}>
         <div className="screen">
@@ -174,7 +175,12 @@ export default function WatchPreview() {
         </div>
       </div>
 
-      {showJson && <pre className="json">{JSON.stringify(doc ?? apps, null, 2)}</pre>}
+      {!embed && showJson && <pre className="json">{JSON.stringify(doc ?? apps, null, 2)}</pre>}
+      {embed && error && (
+        <p className="embed-note">
+          The live demo is off on this deployment ({error}). Open <a href="/preview">/preview</a> with a key.
+        </p>
+      )}
     </div>
   );
 }

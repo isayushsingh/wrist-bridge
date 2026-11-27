@@ -6,6 +6,7 @@
 |---|---|---|---|
 | `WristBridge` | watchOS app (watch-only, single target) | `WristBridge/` + `Shared/` | The app |
 | `WristBridgeWidget` | WidgetKit extension, embedded in the app | `WristBridgeWidget/` + `Shared/` | Complications |
+| `WristBridgeUITests` | UI test bundle | `WristBridgeUITests/` | Taps through the demo like a person (see [UI test](#ui-test)) |
 
 The Xcode project is **generated** from `project.yml` with XcodeGen. Build settings come from `Config/Base.xcconfig`, overridden by your git-ignored `Config/Secrets.xcconfig`. The values reach Swift through Info.plist keys (`BRIDGE_BASE_URL`, `BRIDGE_API_KEY`, `BRIDGE_COMPLICATION_APP`) → `AppConfig`.
 
@@ -52,6 +53,27 @@ The cache keeps the newest 60 responses, keyed by a SHA-256 of the URL.
 - After any successful action, the app calls `WidgetCenter.shared.reloadAllTimelines()`.
 - Families: **circular** (gauge + short text), **rectangular** (text + linear gauge), **inline** (text), **corner** (symbol + label).
 - No App Group is used, so it works with a free Apple ID. The trade-off is that the widget does its own network call.
+
+## UI test
+
+`DemoFlowUITests` launches the app and taps through the demo: app list → Tasks → first open task → toggle Done (expects the "Marked done" toast) → Delete → Confirm → back on the list without that task. It saves a screenshot at each step in the result bundle.
+
+It needs a running proxy with a fresh demo store (restart `npm run dev`; the test deletes a task). The Mac also needs two one-time settings. Without either one, the run fails with "The test runner hung before establishing connection":
+
+| Check | Fix (once, needs your password) | Why |
+|---|---|---|
+| `xcode-select -p` prints `/Library/Developer/CommandLineTools` | `sudo xcode-select -s /Applications/Xcode.app/Contents/Developer` | Test helpers look up tools like `simctl` through it |
+| `DevToolsSecurity -status` says disabled | `sudo DevToolsSecurity -enable` | Xcode launches the test runner paused and must be allowed to resume it (the log says `DTServiceHubClient failed to bless service hub`). Opening Xcode the first time normally offers this. |
+
+If both are fixed and it still hangs: `xcodebuild` always starts the runner paused (`wait_for_debugger = 1` in the session log, even with the scheme's debugger off) and resumes it through Xcode's service hub. If the log keeps saying `failed to bless service hub`, open Xcode.app once, accept any prompts, run the test there with ⌘U, and restart the Mac if the hub still won't authorize.
+
+```bash
+cd watch
+xcodebuild test -project WristBridge.xcodeproj -scheme WristBridge \
+  -destination 'platform=watchOS Simulator,name=Apple Watch Series 11 (46mm)' \
+  -resultBundlePath /tmp/ui.xcresult
+open /tmp/ui.xcresult   # screenshots per step
+```
 
 ## Where to change things
 

@@ -4,6 +4,8 @@
 - `*.png`: rendered copies **embedded in the docs**. Use PNG in Markdown: Mermaid SVGs draw labels with `<foreignObject>`, which many viewers (VS Code preview, some GitHub views) refuse to render inside `<img>` ("Invalid image source").
 - `*.svg`: vector copies for zooming or slides; not embedded.
 
+The landing page (`proxy/app/page.tsx`) shows copies of the PNGs from `proxy/public/diagrams/`. `npm run dev` and `npm run build` refresh them automatically (`proxy/scripts/sync-diagrams.mjs`); commit the copies too, because a Vercel build may not see `docs/`.
+
 Re-render **both** after editing:
 
 ```bash

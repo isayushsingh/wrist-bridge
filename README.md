@@ -36,6 +36,8 @@ cd proxy && npm install && npm run dev
 # open http://localhost:3000/preview  → click "Demo Tasks"
 ```
 
+The root page (http://localhost:3000) is an animated explainer: the problem, how it works, design decisions, the architecture diagrams, and a live watch you can tap through.
+
 Then follow [docs/02-setup.md](docs/02-setup.md) to deploy to Vercel and run on the watch.
 
 ## Documentation
